@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+
+    <servlet>
+        <servlet-name>UserServlet</servlet-name>
+        <servlet-class>com.lhjitem.web.UserServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>UserServlet</servlet-name>
+        <url-pattern>/user</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>FileServlet</servlet-name>
+        <servlet-class>com.lhjitem.web.FileServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>FileServlet</servlet-name>
+        <!--这里在file前面加上manager是为了区分前后台的用户，前台用户只能访问网站并且购买图书等，而后台用户则是管理员，可以修改网页的各种信息-->
+        <url-pattern>/manager/file</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ClientFileServlet</servlet-name>
+        <servlet-class>com.lhjitem.web.ClientFileServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ClientFileServlet</servlet-name>
+        <url-pattern>/client/file</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>KaptchaServlet</servlet-name>
+        <servlet-class>com.google.code.kaptcha.servlet.KaptchaServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>KaptchaServlet</servlet-name>
+        <url-pattern>/kaptcha.jpg</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CartServlet</servlet-name>
+        <servlet-class>com.lhjitem.web.CartServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>CartServlet</servlet-name>
+        <url-pattern>/cart</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>OrderServlet</servlet-name>
+        <servlet-class>com.lhjitem.web.OrderServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>OrderServlet</servlet-name>
+        <url-pattern>/order</url-pattern>
+    </servlet-mapping>
+
+    <filter>
+        <filter-name>ManagerFilter</filter-name>
+        <filter-class>com.lhjitem.filter.ManagerFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>ManagerFilter</filter-name>
+        <url-pattern>/pages/manager/*</url-pattern>
+        <!--同样可以拦截经过servlet的页面-->
+        <url-pattern>/manager/fileServlet</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>TransactionFilter</filter-name>
+        <filter-class>com.lhjitem.filter.TransactionFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>TransactionFilter</filter-name>
+        <!--*表示当前全部工程下所有的请求-->
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!--当出现异常，被捕获后，浏览器端会显示白色空白页面，为了给用户更好的提示，我们专门设置一个错误页面进行提示，并且交给tomcat统一管理-->
+    <error-page>
+        <!--error-code这个标签是错误类型-->
+        <error-code>500</error-code>
+        <location>/pages/error/error500.jsp</location>
+    </error-page>
+
+    <error-page>
+        <!--error-code这个标签是错误类型-->
+        <error-code>404</error-code>
+        <location>/pages/error/error404.jsp</location>
+    </error-page>
+
+</web-app>
